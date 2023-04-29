@@ -20,6 +20,7 @@ func _ready():
 	prev_state = IS_WALKING;
 	state_text = "IS_IDLE"
 	
+#	Get all the ledge nodes in level
 	if get_node("../../LeftLedgeNodes"):
 		for node in get_node("../../LeftLedgeNodes").get_children():
 			node.connect("area_entered", self, "_left_ledge_connected", [node])
@@ -32,14 +33,24 @@ func _physics_process(delta):
 		print("run test")
 		print(get_node("../AnimationPlayer"))
 	
+	accept_input();
+			
+	display_text.clear()
+	display_text.add_text(state_text)
+	display_text.add_text(str(player.is_on_floor()))
 	
+func accept_input():
+	
+	#	when pressing jump on floor or while hanging
 	if Input.is_action_just_pressed("jump") && player.is_on_floor() || Input.is_action_just_pressed("jump") && current_state == IS_HANGING:
 		set_state(IS_JUMPING, current_state, "IS_JUMPING")
+	#	set walking state with conditions for sprinting "right"
 	elif Input.is_action_pressed("ui_right") && player.is_on_floor() && current_state != IS_HANGING:
 		if Input.is_action_pressed("shift"):
 			set_state(IS_SPRINTING, current_state, "IS_SPRINTING")
 		else:
 			set_state(IS_WALKING, current_state, "IS_WALKING")
+	#	set walking state with conditions for sprinting "left"
 	elif Input.is_action_pressed("ui_left") && player.is_on_floor() && current_state != IS_HANGING:
 		if Input.is_action_pressed("shift"):
 			set_state(IS_SPRINTING, current_state, "IS_SPRINTING")
@@ -48,10 +59,7 @@ func _physics_process(delta):
 	else:
 		if player.is_on_floor(): 
 			set_state(IS_IDLE, current_state, "IS_IDLE")
-			
-	display_text.clear()
-	display_text.add_text(state_text)
-	display_text.add_text(str(player.is_on_floor()))
+	
 
 func set_state(new_state, prev_state, text):
 	# Cannot switch to walking while in the air
@@ -66,12 +74,17 @@ func set_state(new_state, prev_state, text):
 	current_state = new_state;
 	prev_state = prev_state;
 	state_text = text
+	print(current_state, " -current state")
+	print(prev_state, " -prev state")
 
 func get_state():
 	return current_state;
 
 func get_state_text():
 	return state_text;
+
+func set_idle():
+	set_state(IS_IDLE, current_state, "IS_IDLE");
 
 func _left_ledge_connected(body, node):
 	print("ledge connected")

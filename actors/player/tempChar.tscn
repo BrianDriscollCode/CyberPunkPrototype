@@ -30,7 +30,6 @@ frame = 2
 [node name="climb" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="climb"]
-visible = false
 position = Vector2( 0.75, -1 )
 shape = SubResource( 41 )
 disabled = true
@@ -63,3 +62,11 @@ margin_right = 90.0
 margin_bottom = 5.0
 tab_size = 2
 text = "test"
+
+[node name="mainCamera" type="Camera2D" parent="."]
+position = Vector2( 134, -49 )
+current = true
+process_mode = 0
+limit_top = 0
+drag_margin_h_enabled = true
+smoothing_enabled = true

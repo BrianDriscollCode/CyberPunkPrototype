@@ -327,32 +327,18 @@ format = 1
 tile_data = PoolIntArray( 720900, 3, 0, 720901, 4, 0, 786459, 2, 0, 851991, 0, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
-position = Vector2( 218, 174 )
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2( 134, -49 )
-current = true
-process_mode = 0
-limit_top = 0
-drag_margin_h_enabled = true
-smoothing_enabled = true
+position = Vector2( 205, 201 )
 
 [node name="RightLedgeNodes" type="Node2D" parent="."]
 
 [node name="climbLedge2" parent="RightLedgeNodes" instance=ExtResource( 4 )]
-position = Vector2( 138, 73 )
-collision_layer = 2
-collision_mask = 2
+position = Vector2( 355, 199 )
 
 [node name="climbLedge4" parent="RightLedgeNodes" instance=ExtResource( 4 )]
 position = Vector2( 483, 135 )
-collision_layer = 2
-collision_mask = 2
 
 [node name="climbLedge6" parent="RightLedgeNodes" instance=ExtResource( 4 )]
 position = Vector2( 595, 199 )
-collision_layer = 2
-collision_mask = 2
 
 [node name="LeftLedgeNodes" type="Node2D" parent="."]
 
@@ -361,13 +347,9 @@ position = Vector2( 253, 199 )
 
 [node name="climbLedge3" parent="LeftLedgeNodes" instance=ExtResource( 4 )]
 position = Vector2( 381, 135 )
-collision_layer = 2
-collision_mask = 2
 
 [node name="climbLedge5" parent="LeftLedgeNodes" instance=ExtResource( 4 )]
 position = Vector2( 557, 199 )
-collision_layer = 2
-collision_mask = 2
 
 [connection signal="area_shape_entered" from="RightLedgeNodes/climbLedge2" to="Player" method="_on_climbLedge_area_shape_entered"]
 [connection signal="area_shape_entered" from="RightLedgeNodes/climbLedge4" to="Player" method="_on_climbLedge_area_shape_entered"]
