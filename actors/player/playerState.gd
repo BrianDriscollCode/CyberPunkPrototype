@@ -29,9 +29,6 @@ func _ready():
 			node.connect("area_entered", self, "_right_ledge_connected", [node])
 	
 func _physics_process(delta):
-	if Input.is_action_pressed("testKey"):
-		print("run test")
-		print(get_node("../AnimationPlayer"))
 	
 	accept_input();
 			
@@ -74,8 +71,6 @@ func set_state(new_state, prev_state, text):
 	current_state = new_state;
 	prev_state = prev_state;
 	state_text = text
-	print(current_state, " -current state")
-	print(prev_state, " -prev state")
 
 func get_state():
 	return current_state;
@@ -87,13 +82,11 @@ func set_idle():
 	set_state(IS_IDLE, current_state, "IS_IDLE");
 
 func _left_ledge_connected(body, node):
-	print("ledge connected")
 	current_state = IS_HANGING;
 	player.global_position = node.global_position - Vector2(3, -3);
 	state_text = "IS_HANGING"
 	
 func _right_ledge_connected(body, node):
-	print("ledge connected")
 	current_state = IS_HANGING;
 	player.global_position = node.global_position - Vector2(-3, -3);
 	state_text = "IS_HANGING"

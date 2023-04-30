@@ -19,6 +19,14 @@ func _physics_process(delta):
 	if is_current_state:
 		sprite.play("idle");
 		apply_gravity();
+		
+		if !player.is_on_floor():
+			character_motion.y += (jump_gravity_increment * 2) + jump_gravity_increment * delta
+			if jump_gravity_increment > 1:
+				jump_gravity_increment -= .15
+		else:
+			character_motion.y = 0;
+			
 		player.move_and_slide(character_motion, UP)
 	
 

@@ -51,7 +51,7 @@ func set_animation():
 		camera.set_follow_smoothing(3)
 		camera._set_current(true);
 		var tween5 = create_tween();
-		tween5.tween_property(player, "global_position", player.global_position + Vector2(10, -6), 0.01)
+		tween5.tween_property(player, "global_position", player.global_position + Vector2(13, -6), 0.01)
 		yield(tween5, "finished");
 		yield(get_tree().create_timer(0.4), "timeout")
 		get_parent().set_idle();

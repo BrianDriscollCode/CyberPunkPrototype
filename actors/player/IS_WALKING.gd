@@ -4,13 +4,13 @@ onready var sprite = get_node("../../AnimatedSprite");
 onready var playerState = get_parent();
 onready var player = get_parent().get_parent();
 
-const SPEED = 140
+const SPEED = 60
 const UP = Vector2(0, -1)
 const JUMP_SPEED = 250
 var character_motion = Vector2(0,0)
-var jump_gravity_increment = 10
+var jump_gravity_increment = 5
 
-var gravity = 10;
+var gravity = 200;
 
 var apply_gravity = true;
 
@@ -20,9 +20,11 @@ func _physics_process(delta):
 	check_if_state();
 		
 	if is_current_state:
-		character_motion.y = gravity;
-		sprite.play("run");
+#		character_motion.y = gravity;
+		sprite.play("walk");
+		applyGravity(delta);
 		basic_movement();
+		
 		player.move_and_slide(character_motion, UP)
 
 func check_if_state():
@@ -45,3 +47,15 @@ func basic_movement():
 		else: 
 #			sprite.play("default");
 			character_motion.x = 0
+
+func applyGravity(delta):
+	if apply_gravity == true:		
+		character_motion.y += 4 + jump_gravity_increment 
+	if !player.is_on_floor():
+		character_motion.y += (jump_gravity_increment * 2) + jump_gravity_increment * delta
+		if jump_gravity_increment > 1:
+			jump_gravity_increment -= .15
+	else:
+			character_motion.y = 0;
+#		else: 
+#			character_motion.y = 0;
