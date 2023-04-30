@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://assets/enemySpriteSheets/robot/trueIdle/cop1.png" type="Texture" id=1]
 [ext_resource path="res://assets/enemySpriteSheets/robot/run/cop8.png" type="Texture" id=2]
@@ -57,6 +57,34 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ "idle" ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "idle2"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "idle" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=3]
@@ -197,7 +225,7 @@ script = ExtResource( 17 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
-animation = "shoot"
+animation = "idle"
 frame = 1
 playing = true
 flip_h = true
@@ -230,24 +258,21 @@ enabled = true
 cast_to = Vector2( 250, 0 )
 
 [node name="RayCast2" type="RayCast2D" parent="."]
-position = Vector2( 0, 23 )
-enabled = true
-cast_to = Vector2( -250, 0 )
-
-[node name="RayCast3" type="RayCast2D" parent="."]
 position = Vector2( 0, -8 )
 enabled = true
 cast_to = Vector2( 250, 0 )
 
-[node name="RayCast4" type="RayCast2D" parent="."]
-position = Vector2( 0, -8 )
-enabled = true
-cast_to = Vector2( -250, 0 )
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/idle = SubResource( 5 )
+anims/idle2 = SubResource( 7 )
 anims/run_left = SubResource( 3 )
 anims/run_right = SubResource( 4 )
 anims/shoot = SubResource( 6 )
+
+[node name="SpawnBulletRight" type="Node2D" parent="."]
+position = Vector2( 16, -1 )
+
+[node name="SpawnBulletLeft" type="Node2D" parent="."]
+position = Vector2( 16, -1 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

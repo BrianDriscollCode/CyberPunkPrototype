@@ -83,10 +83,10 @@ func set_idle():
 
 func _left_ledge_connected(body, node):
 	current_state = IS_HANGING;
-	player.global_position = node.global_position - Vector2(3, -3);
+	player.global_position = node.global_position - Vector2(3, -4);
 	state_text = "IS_HANGING"
 	
 func _right_ledge_connected(body, node):
 	current_state = IS_HANGING;
-	player.global_position = node.global_position - Vector2(-3, -3);
+	player.global_position = node.global_position - Vector2(-3, -4);
 	state_text = "IS_HANGING"

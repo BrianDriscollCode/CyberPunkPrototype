@@ -5,105 +5,112 @@ enum {
 	IS_ATTACKING
 }
 
+onready var scene = get_tree().get_current_scene();
+onready var player = get_tree().get_current_scene().get_node("Player");
+onready var spawnBulletRightPosition = get_node("SpawnBulletRight").get_global_position();
+onready var spawnBulletLeftPosition = get_node("SpawnBulletLeft").get_global_position();
+
+onready var bullet = preload("res://weapons/projectile/red_bullet.tscn").instance();
+
 onready var raycast1 = get_node("RayCast1");
 onready var raycast2 = get_node("RayCast2");
-onready var raycast3 = get_node("RayCast3");
-onready var raycast4 = get_node("RayCast4");
 
 onready var display_text = get_node("text");
 
 var loop_started = false;
+var loop_finished = false;
 var current_state = IS_PATROLLING;
+var prev_state = null;
 onready var sprite = get_node("AnimatedSprite");
 
 onready var animationPlayer = get_node("AnimationPlayer");
-var first_play = true;
+var first_play = false;
 var paused = false;
+var changing_state = false;
+
+var has_entered = false;
+var has_left = true;
 	
 
 func _ready():
-	patrol();
+	animationPlayer.play("run_left");
+	print(player)
+	raycast1.set_global_rotation_degrees(-180)
+	raycast2.set_global_rotation_degrees(-180)
 
 func _physics_process(delta):
 	
-	if raycast1.is_colliding() || raycast2.is_colliding() || raycast3.is_colliding() || raycast4.is_colliding():
-		set_attacking_state();
-	if !raycast1.is_colliding() && !raycast2.is_colliding() && !raycast3.is_colliding() && !raycast4.is_colliding():
-		set_patrolling_state();
+	if raycast1.is_colliding() || raycast2.is_colliding():
+		if !has_entered:
+			set_state(IS_ATTACKING, current_state)
+			has_entered = true;
+			has_left = false;
+	if !raycast1.is_colliding() && !raycast2.is_colliding():
+		if !has_left:
+			set_state(IS_PATROLLING, current_state)
+			has_entered = false;
+			has_left = true;
 		
-	
+#	print(animationPlayer.get_queue().size())
 		
-	if current_state == IS_ATTACKING:
+	if current_state == IS_ATTACKING && first_play == true:
+		print("run is attacking")
 		sprite.set_modulate(Color(100,1,1,1))
 		attacking();
-		
-	if current_state == IS_PATROLLING && first_play == false && paused == true:
-		animationPlayer.play();
-		paused = false;
-		
+		first_play = false;
+
+	if current_state == IS_PATROLLING && first_play == true:
+		print("run is patrolling")
+		resume_animation();
+		first_play = false
+##
 	display_text.clear();
 	display_text.add_text(str(current_state))
 	
-func patrol():
-	first_play = false;
-	animationPlayer.play("run_left");
-	animationPlayer.queue("idle");
-	animationPlayer.queue("run_right");
-	animationPlayer.queue("idle");
-	
 func resume_animation():
+	print("resuming animation")
+	print(animationPlayer.get_queue());
 	animationPlayer.play();
-	
+#
 func end_current_animation():
+	print(animationPlayer.get_queue())
 	animationPlayer.stop(false);
-	
+	print(animationPlayer.get_queue())
+#
 func attacking():
 	end_current_animation();
 	shoot();
-	paused = true;
-	
+#
 func shoot():
 	sprite.play("shoot");
-#func play_patrol_loop():
-#	if current_state == IS_ATTACKING:
-#		return;
-#
-#	if !loop_started && current_state == IS_PATROLLING:
-#		sprite.set_modulate(Color(1,1,1,1))
-#		loop_started = true;
-##		idle
-#		sprite.play("idle");
-#		yield(get_tree().create_timer(2), "timeout")
-#
-##		run left
-#		sprite.play("run");
-#		sprite.set_flip_h(false);
-#		var tween = create_tween();
-#		tween.tween_property(self, "global_position", self.global_position + Vector2(-83, 0), 2);
-#		yield(tween, "finished")
-#
-##		idle
-#		sprite.play("idle");
-#		yield(get_tree().create_timer(2), "timeout")
-#
-##		run right
-#		sprite.play("run");
-#		sprite.set_flip_h(true);
-#		var tween2 = create_tween();
-#		tween2.tween_property(self, "global_position", self.global_position + Vector2(83, 0), 2);
-#		yield(tween2, "finished")
-#
-##		idle
-#		sprite.play("idle");
-#		yield(get_tree().create_timer(2), "timeout")
-#
-#		loop_started = false;
-		
-func set_attacking_state():
-	current_state = IS_ATTACKING;
+	if player.get_global_position().x < self.get_global_position().x:
+		var bullet = scene.add_child(bullet);
+		bullet.global_position = spawnBulletLeftPosition;
 	
-func set_patrolling_state():
-	current_state = IS_PATROLLING;
+	
+func face_player():
+	if player.get_global_position().x > self.get_global_position():
+		sprite.flip_h(true);
+		
+
+func set_state(new_state, prev_state):
+	print("changing state to: ", new_state);
+	current_state = new_state;
+	prev_state = prev_state;
+	first_play = true;
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	patrol();
+	if anim_name == "run_left":
+		animationPlayer.play("idle");
+	elif anim_name == "idle":
+		animationPlayer.play("run_right");
+		yield(get_tree().create_timer(0.03), "timeout")
+		raycast1.set_global_rotation_degrees(0)
+		raycast2.set_global_rotation_degrees(0)
+	elif anim_name == "run_right":
+		animationPlayer.play("idle2");
+	elif anim_name == "idle2":
+		animationPlayer.play("run_left");
+		yield(get_tree().create_timer(0.03), "timeout")
+		raycast1.set_global_rotation_degrees(-180)
+		raycast2.set_global_rotation_degrees(-180)
