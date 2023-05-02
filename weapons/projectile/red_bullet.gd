@@ -6,7 +6,7 @@ extends Area2D
 # var b = "text"
 onready var player = get_tree().get_current_scene().get_node("Player");
 onready var on_screen_notifier = get_node("VisibilityNotifier2D");
-const SPEED = 2;
+const SPEED = 4;
 var move_left = false;
 var move_right = false;
 var direction_chosen = false;
@@ -15,11 +15,6 @@ var can_queue_free = false;
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 
 func _physics_process(delta):
 	
@@ -41,4 +36,3 @@ func _physics_process(delta):
 	elif move_right: 
 		self.global_position.x += SPEED;
 
-#	print(move_left, move_right)

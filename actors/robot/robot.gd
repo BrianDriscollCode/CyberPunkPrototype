@@ -30,6 +30,12 @@ var changing_state = false;
 
 var has_entered = false;
 var has_left = true;
+
+onready var switch_patrol_timer = get_node("switch_patrol_timer");
+var switch_timer_done = false;
+var timer_started = false;
+
+onready var first_play_reset = get_node("first_play_reset");
 	
 
 func _ready():
@@ -39,14 +45,20 @@ func _ready():
 	raycast2.set_global_rotation_degrees(-180)
 
 func _physics_process(delta):
+	print(first_play)
 	
 	if raycast1.is_colliding() || raycast2.is_colliding():
 		if !has_entered:
 			set_state(IS_ATTACKING, current_state)
+			switch_timer_done = false
+			timer_started = false;
 			has_entered = true;
 			has_left = false;
 	if !raycast1.is_colliding() && !raycast2.is_colliding():
-		if !has_left:
+		if !switch_timer_done && !timer_started:
+			switch_patrol_timer.start();
+			timer_started = true;
+		elif !has_left && switch_timer_done:
 			set_state(IS_PATROLLING, current_state)
 			has_entered = false;
 			has_left = true;
@@ -55,9 +67,10 @@ func _physics_process(delta):
 		
 	if current_state == IS_ATTACKING && first_play == true:
 		print("run is attacking")
-		sprite.set_modulate(Color(100,1,1,1))
+#		sprite.set_modulate(Color(100,1,1,1))
 		attacking();
 		first_play = false;
+		first_play_reset.start()
 
 	if current_state == IS_PATROLLING && first_play == true:
 		print("run is patrolling")
@@ -78,6 +91,7 @@ func end_current_animation():
 	print(animationPlayer.get_queue())
 #
 func attacking():
+	print("run attack")
 	end_current_animation();
 	shoot();
 #
@@ -111,6 +125,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		animationPlayer.play("idle");
 	elif anim_name == "idle":
 		animationPlayer.play("run_right");
+		sprite.play("run")
 		yield(get_tree().create_timer(0.03), "timeout")
 		raycast1.set_global_rotation_degrees(0)
 		raycast2.set_global_rotation_degrees(0)
@@ -118,6 +133,18 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		animationPlayer.play("idle2");
 	elif anim_name == "idle2":
 		animationPlayer.play("run_left");
+		sprite.play("run")
 		yield(get_tree().create_timer(0.03), "timeout")
 		raycast1.set_global_rotation_degrees(-180)
 		raycast2.set_global_rotation_degrees(-180)
+
+
+func _on_switch__patrol_timer_timeout():
+	print("run switch")
+	print(switch_timer_done)
+	switch_timer_done = true;
+	print(switch_timer_done)
+
+
+func _on_first_play_reset_timeout():
+	first_play = true;
