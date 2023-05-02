@@ -7,10 +7,10 @@ enum {
 
 onready var scene = get_tree().get_current_scene();
 onready var player = get_tree().get_current_scene().get_node("Player");
-onready var spawnBulletRightPosition = get_node("SpawnBulletRight").get_global_position();
-onready var spawnBulletLeftPosition = get_node("SpawnBulletLeft").get_global_position();
+onready var spawnBulletRight = get_node("SpawnBulletRight")
+onready var spawnBulletLeft = get_node("SpawnBulletLeft")
 
-onready var bullet = preload("res://weapons/projectile/red_bullet.tscn").instance();
+onready var bullet = preload("res://weapons/projectile/red_bullet.tscn");
 
 onready var raycast1 = get_node("RayCast1");
 onready var raycast2 = get_node("RayCast2");
@@ -84,8 +84,15 @@ func attacking():
 func shoot():
 	sprite.play("shoot");
 	if player.get_global_position().x < self.get_global_position().x:
-		var bullet = scene.add_child(bullet);
-		bullet.global_position = spawnBulletLeftPosition;
+		yield(get_tree().create_timer(1), "timeout")
+		var newBullet = bullet.instance();
+		scene.add_child(newBullet);
+		newBullet.global_position = spawnBulletLeft.get_global_position();
+	else:
+		yield(get_tree().create_timer(1), "timeout")
+		var newBullet = bullet.instance();
+		scene.add_child(newBullet);
+		newBullet.global_position = spawnBulletRight.get_global_position();
 	
 	
 func face_player():

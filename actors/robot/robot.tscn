@@ -40,9 +40,6 @@ animations = [ {
 "speed": 3.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 7, 24.5 )
-
 [sub_resource type="Animation" id=5]
 resource_name = "idle"
 length = 2.0
@@ -57,6 +54,18 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ "idle" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -138,6 +147,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "run_right"
@@ -190,6 +211,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [ true ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath(".:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
 
 [sub_resource type="Animation" id=6]
 resource_name = "shoot"
@@ -218,6 +251,9 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 7, 24.5 )
+
 [node name="Robot" type="Area2D"]
 position = Vector2( -83, 0 )
 collision_layer = 4
@@ -226,8 +262,6 @@ script = ExtResource( 17 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 1 )
 animation = "idle"
-frame = 1
-playing = true
 flip_h = true
 
 [node name="enemyState" type="Node" parent="."]
@@ -241,10 +275,6 @@ script = ExtResource( 19 )
 
 [node name="IS_WALKING" type="Node" parent="enemyState"]
 script = ExtResource( 21 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 5.5 )
-shape = SubResource( 2 )
 
 [node name="text" type="RichTextLabel" parent="."]
 margin_left = -63.0
@@ -269,10 +299,14 @@ anims/run_left = SubResource( 3 )
 anims/run_right = SubResource( 4 )
 anims/shoot = SubResource( 6 )
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 5.5 )
+shape = SubResource( 2 )
+
 [node name="SpawnBulletRight" type="Node2D" parent="."]
-position = Vector2( 16, -1 )
+position = Vector2( 21, 0 )
 
 [node name="SpawnBulletLeft" type="Node2D" parent="."]
-position = Vector2( 16, -1 )
+position = Vector2( -19, 0 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
