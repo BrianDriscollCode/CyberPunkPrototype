@@ -7,8 +7,7 @@ enum {
 
 onready var scene = get_tree().get_current_scene();
 onready var player = get_tree().get_current_scene().get_node("Player");
-onready var spawnBulletRight = get_node("SpawnBulletRight")
-onready var spawnBulletLeft = get_node("SpawnBulletLeft")
+onready var spawnBullet = get_node("SpawnBullet");
 
 onready var bullet = preload("res://weapons/projectile/red_bullet.tscn");
 
@@ -35,6 +34,8 @@ onready var switch_patrol_timer = get_node("switch_patrol_timer");
 var switch_timer_done = false;
 var timer_started = false;
 
+var direction = "left";
+
 onready var first_play_reset = get_node("first_play_reset");
 	
 
@@ -45,7 +46,7 @@ func _ready():
 	raycast2.set_global_rotation_degrees(-180)
 
 func _physics_process(delta):
-	print(first_play)
+#	print(first_play)
 	
 	if raycast1.is_colliding() || raycast2.is_colliding():
 		if !has_entered:
@@ -65,12 +66,29 @@ func _physics_process(delta):
 		
 #	print(animationPlayer.get_queue().size())
 		
-	if current_state == IS_ATTACKING && first_play == true:
-		print("run is attacking")
-#		sprite.set_modulate(Color(100,1,1,1))
-		attacking();
-		first_play = false;
-		first_play_reset.start()
+	if current_state == IS_ATTACKING:
+#		print("run is attacking")
+#		sprite.set_modulate(Color(100,1,1,1)
+		if player.global_position > self.global_position && direction == "right":
+			sprite.set_flip_h(true);
+#			print("set to right");
+			raycast1.set_global_rotation_degrees(0)
+			raycast2.set_global_rotation_degrees(0)
+			direction = "left";
+			spawnBullet.position.x = 21
+			print(spawnBullet.position)
+		if player.global_position < self.global_position && direction == "left":
+			sprite.set_flip_h(false);
+#			print("set to left")
+			raycast1.set_global_rotation_degrees(-180)
+			raycast2.set_global_rotation_degrees(-180)
+			direction = "right";
+			spawnBullet.position.x = -21
+			print(spawnBullet.position)
+		if first_play == true:
+			attacking();
+			first_play = false;
+			first_play_reset.start()
 
 	if current_state == IS_PATROLLING && first_play == true:
 		print("run is patrolling")
@@ -84,29 +102,34 @@ func resume_animation():
 	print("resuming animation")
 	print(animationPlayer.get_queue());
 	animationPlayer.play();
+	if direction == "left":
+		sprite.set_flip_h(false);
+	if direction == "right":
+		sprite.set_flip_h(true);
 #
 func end_current_animation():
-	print(animationPlayer.get_queue())
+	print(animationPlayer.get_queue());
 	animationPlayer.stop(false);
-	print(animationPlayer.get_queue())
+	print(animationPlayer.get_queue());
 #
 func attacking():
 	print("run attack")
 	end_current_animation();
 	shoot();
-#
+
 func shoot():
 	sprite.play("shoot");
-	if player.get_global_position().x < self.get_global_position().x:
-		yield(get_tree().create_timer(1), "timeout")
+	if player.get_global_position().x < self.get_global_position().x && current_state != IS_PATROLLING:
+		yield(get_tree().create_timer(1), "timeout");
 		var newBullet = bullet.instance();
 		scene.add_child(newBullet);
-		newBullet.global_position = spawnBulletLeft.get_global_position();
+		newBullet.global_position = spawnBullet.get_global_position();
 	else:
-		yield(get_tree().create_timer(1), "timeout")
-		var newBullet = bullet.instance();
-		scene.add_child(newBullet);
-		newBullet.global_position = spawnBulletRight.get_global_position();
+		if current_state != IS_PATROLLING:
+			yield(get_tree().create_timer(1), "timeout");
+			var newBullet = bullet.instance();
+			scene.add_child(newBullet);
+			newBullet.global_position = spawnBullet.get_global_position();
 	
 	
 func face_player():
@@ -122,6 +145,7 @@ func set_state(new_state, prev_state):
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "run_left":
+		direction = "left";
 		animationPlayer.play("idle");
 	elif anim_name == "idle":
 		animationPlayer.play("run_right");
@@ -130,6 +154,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		raycast1.set_global_rotation_degrees(0)
 		raycast2.set_global_rotation_degrees(0)
 	elif anim_name == "run_right":
+		direction = "right";
 		animationPlayer.play("idle2");
 	elif anim_name == "idle2":
 		animationPlayer.play("run_left");

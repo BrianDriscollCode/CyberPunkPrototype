@@ -1,0 +1,118 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop7.png" type="Texture" id=1]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop6.png" type="Texture" id=2]
+[ext_resource path="res://assets/enemySpriteSheets/robot/shoot/cop2.png" type="Texture" id=4]
+[ext_resource path="res://assets/enemySpriteSheets/robot/shoot/cop3.png" type="Texture" id=5]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop5.png" type="Texture" id=6]
+[ext_resource path="res://assets/enemySpriteSheets/robot/idle/cop3.png" type="Texture" id=7]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop3.png" type="Texture" id=8]
+[ext_resource path="res://actors/robot2/IS_SHOOTING.gd" type="Script" id=9]
+[ext_resource path="res://actors/robot2/robotState.gd" type="Script" id=10]
+[ext_resource path="res://actors/robot2/IS_PATROLLING.gd" type="Script" id=11]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop8.png" type="Texture" id=12]
+[ext_resource path="res://assets/enemySpriteSheets/robot/idle/cop4.png" type="Texture" id=13]
+[ext_resource path="res://assets/enemySpriteSheets/robot/idle/cop1.png" type="Texture" id=14]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop1.png" type="Texture" id=15]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop9.png" type="Texture" id=16]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop4.png" type="Texture" id=17]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop10.png" type="Texture" id=18]
+[ext_resource path="res://assets/enemySpriteSheets/robot/run/cop2.png" type="Texture" id=19]
+[ext_resource path="res://assets/enemySpriteSheets/robot/idle/cop2.png" type="Texture" id=20]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -91, 0 )
+}
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 14 ), ExtResource( 20 ), ExtResource( 7 ), ExtResource( 13 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": false,
+"name": "pullGun",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 15 ), ExtResource( 19 ), ExtResource( 8 ), ExtResource( 17 ), ExtResource( 6 ), ExtResource( 2 ), ExtResource( 1 ), ExtResource( 12 ), ExtResource( 16 ), ExtResource( 18 ) ],
+"loop": true,
+"name": "run",
+"speed": 8.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "shooting",
+"speed": 5.0
+} ]
+
+[node name="RobotMob" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+rotation = 3.14159
+loop = false
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Path2D/PathFollow2D"]
+rotation = 3.14159
+frames = SubResource( 2 )
+animation = "idle"
+
+[node name="RayCastLeft" type="RayCast2D" parent="Path2D/PathFollow2D"]
+position = Vector2( 1.83588e-06, 21 )
+enabled = true
+cast_to = Vector2( 150, 0 )
+
+[node name="RayCastLeft2" type="RayCast2D" parent="Path2D/PathFollow2D"]
+enabled = true
+cast_to = Vector2( 150, 0 )
+
+[node name="RayCastLeft3" type="RayCast2D" parent="Path2D/PathFollow2D"]
+position = Vector2( -1.74846e-06, -20 )
+enabled = true
+cast_to = Vector2( 150, 0 )
+
+[node name="RayCastRight" type="RayCast2D" parent="Path2D/PathFollow2D"]
+position = Vector2( 1.83588e-06, 21 )
+enabled = true
+cast_to = Vector2( -150, 0 )
+
+[node name="RayCastRight2" type="RayCast2D" parent="Path2D/PathFollow2D"]
+enabled = true
+cast_to = Vector2( -150, 0 )
+
+[node name="RayCastRight3" type="RayCast2D" parent="Path2D/PathFollow2D"]
+position = Vector2( -1.74846e-06, -20 )
+enabled = true
+cast_to = Vector2( -150, 0 )
+
+[node name="SpawnBullet" type="Node2D" parent="Path2D/PathFollow2D"]
+position = Vector2( -24, 2.09815e-06 )
+rotation = 3.14159
+
+[node name="robotState" type="Node" parent="."]
+script = ExtResource( 10 )
+
+[node name="IS_PATROLLING" type="Node" parent="robotState"]
+script = ExtResource( 11 )
+
+[node name="IS_SHOOTING" type="Node" parent="robotState"]
+script = ExtResource( 9 )
+
+[node name="PatrolTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="OutOfActionTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="FirstPlayTimer" type="Timer" parent="."]
+
+[connection signal="animation_finished" from="Path2D/PathFollow2D/AnimatedSprite" to="robotState/IS_SHOOTING" method="_on_AnimatedSprite_animation_finished"]
+[connection signal="timeout" from="PatrolTimer" to="robotState/IS_PATROLLING" method="_on_Timer_timeout"]
+[connection signal="timeout" from="OutOfActionTimer" to="robotState" method="_on_OutOfActionTimer_timeout"]
+[connection signal="timeout" from="FirstPlayTimer" to="robotState/IS_SHOOTING" method="_on_FirstPlayTimer_timeout"]

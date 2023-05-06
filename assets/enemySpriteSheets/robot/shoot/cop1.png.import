@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cop3.png-8353574d9b75262ed4a0a5812a41a66a.stex"
+path="res://.import/cop1.png-c3814ebd633f8e2751fadb0dd0542dfa.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/enemySpriteSheets/robot/trueIdle/cop3.png"
-dest_files=[ "res://.import/cop3.png-8353574d9b75262ed4a0a5812a41a66a.stex" ]
+source_file="res://assets/enemySpriteSheets/robot/shoot/cop1.png"
+dest_files=[ "res://.import/cop1.png-c3814ebd633f8e2751fadb0dd0542dfa.stex" ]
 
 [params]
 

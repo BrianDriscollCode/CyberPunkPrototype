@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/cop2.png-96327df755f6d268deca65281b74b17d.stex"
+path="res://.import/cop4.png-9db21e16d69def073a6e42f4b3c4c913.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/enemySpriteSheets/robot/trueIdle/cop2.png"
-dest_files=[ "res://.import/cop2.png-96327df755f6d268deca65281b74b17d.stex" ]
+source_file="res://assets/enemySpriteSheets/robot/idle/cop4.png"
+dest_files=[ "res://.import/cop4.png-9db21e16d69def073a6e42f4b3c4c913.stex" ]
 
 [params]
 
