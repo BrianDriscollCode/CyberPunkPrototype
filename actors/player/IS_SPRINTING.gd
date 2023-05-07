@@ -4,6 +4,8 @@ onready var sprite = get_node("../../AnimatedSprite");
 onready var playerState = get_parent();
 onready var player = get_parent().get_parent();
 
+var sound_playing = false;
+
 const SPEED = 145
 const UP = Vector2(0, -1)
 const JUMP_SPEED = 250
@@ -32,6 +34,9 @@ func check_if_state():
 		is_current_state = false;
 		
 func basic_movement():
+		if sound_playing == false:
+			sound_playing = true;
+	
 		if Input.is_action_pressed("ui_right"):
 			character_motion.x = SPEED 
 			sprite.set_flip_h(false);
@@ -40,6 +45,7 @@ func basic_movement():
 			sprite.set_flip_h(true);
 		else: 
 			character_motion.x = 0
+			sound_playing = false;
 			
 func applyGravity(delta):
 	if apply_gravity == true:		

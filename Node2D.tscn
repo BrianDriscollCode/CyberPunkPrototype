@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/environment/Tiles.png" type="Texture" id=1]
 [ext_resource path="res://assets/environment/Props-01.png" type="Texture" id=2]
 [ext_resource path="res://actors/player/tempChar.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levelTools/climbLedge.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/environment/Buildings.png" type="Texture" id=5]
-[ext_resource path="res://actors/robot/robot.tscn" type="PackedScene" id=6]
 [ext_resource path="res://actors/robot2/RobotMob.tscn" type="PackedScene" id=7]
 
 [sub_resource type="TileSet" id=4]
@@ -355,12 +354,6 @@ collision_layer = 8
 [node name="climbLedge5" parent="LeftLedgeNodes" instance=ExtResource( 4 )]
 position = Vector2( 621, 231 )
 collision_layer = 8
-
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2( 211, 234 )
-
-[node name="Robot" parent="Node2D" instance=ExtResource( 6 )]
-scale = Vector2( 0.7, 0.7 )
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 position = Vector2( 355, 241 )

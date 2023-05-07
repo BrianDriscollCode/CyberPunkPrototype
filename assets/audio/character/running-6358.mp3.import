@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/running-6358.mp3-e4574d47afa659dbc4d4c491131123b6.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/character/running-6358.mp3"
+dest_files=[ "res://.import/running-6358.mp3-e4574d47afa659dbc4d4c491131123b6.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
