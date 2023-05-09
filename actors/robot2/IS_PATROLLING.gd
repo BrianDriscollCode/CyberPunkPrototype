@@ -34,11 +34,12 @@ func _physics_process(delta):
 		run_animations(delta);
 
 func run_animations(delta):
+	# Change step in animation steps based on the offset of "path" and the "step" number
 	if current_offset == 1 && step == 0:
 		step = 1;
 	if current_offset == 0 && step == 2:
 		step = 3;
-	
+
 	if step == 0:
 		move_right(delta)
 		leftRayCast.set_enabled(true);
@@ -49,10 +50,10 @@ func run_animations(delta):
 		rightRayCast3.set_enabled(false);
 	elif step == 1:
 		sprite.play("idle")
+		# start idle timer to increase step to "2"
 		if !timer_started:
 			timer.start();
 			timer_started = true;
-			print("timer started")
 	elif step == 2:
 		move_left(delta);
 		leftRayCast.set_enabled(false);
@@ -63,10 +64,10 @@ func run_animations(delta):
 		rightRayCast3.set_enabled(true);
 	elif step == 3:
 		sprite.play("idle")
+		# start idle timer to increase step to "2"
 		if !timer_started:
 			timer.start();
 			timer_started = true;
-			print("timer started")
 	else:
 		pass;
 
@@ -85,7 +86,6 @@ func get_current_offset():
 	current_offset = path.get_unit_offset();
 
 func _on_Timer_timeout():
-	print("timer timeut")
 	if step < 3:
 		step += 1;
 	else: 

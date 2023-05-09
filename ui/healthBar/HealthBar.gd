@@ -4,7 +4,6 @@ onready var filler1 = $filler1;
 onready var filler2 = $filler2;
 onready var filler3 = $filler3;
 
-
 var character_health = 3; 
 
 func _physics_process(delta):

@@ -26,17 +26,21 @@ func _ready():
 	current_state = IS_PATROLLING;
 	
 func _physics_process(delta):
+	# Trigger shooting is raycasts collide
 	if leftRayCast.is_colliding() || leftRayCast2.is_colliding() || leftRayCast3.is_colliding():
 		set_state(IS_SHOOTING, current_state, "IS_SHOOTING")
 		in_action = true;
+	# Trigger shooting is raycasts collide
 	elif rightRayCast.is_colliding() || rightRayCast2.is_colliding() || rightRayCast3.is_colliding():
 		set_state(IS_SHOOTING, current_state, "IS_SHOOTING")
 		in_action = true;
-	elif in_action == false: 
-		set_state(IS_PATROLLING, current_state, "IS_PATROLLING")
+	# countdown until out of action to return to patrolling
 	elif timer_started == false:
 		timer_started = true;
 		out_of_action_timer.start();
+	# restart patrolling state
+	elif in_action == false: 
+		set_state(IS_PATROLLING, current_state, "IS_PATROLLING")
 	else:
 		pass
 		
