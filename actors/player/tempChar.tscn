@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://actors/player/AnimatedSprite.tscn" type="PackedScene" id=1]
 [ext_resource path="res://actors/player/playerState.gd" type="Script" id=2]
@@ -9,7 +9,40 @@
 [ext_resource path="res://actors/player/IS_HANGING.gd" type="Script" id=7]
 [ext_resource path="res://actors/player/IS_SPRINTING.gd" type="Script" id=8]
 [ext_resource path="res://actors/player/IS_CLIMBING.gd" type="Script" id=9]
-[ext_resource path="res://actors/player/mainCamera.gd" type="Script" id=10]
+
+[sub_resource type="Shader" id=43]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+// Texture must have 'Filter'-flag enabled!
+
+// Automatic smoothing
+// independent of geometry and perspective
+vec4 texturePointSmooth(sampler2D smp, vec2 uv, vec2 pixel_size)
+{
+	vec2 ddx = dFdx(uv);
+	vec2 ddy = dFdy(uv);
+	vec2 lxy = sqrt(ddx * ddx + ddy * ddy);
+	
+	vec2 uv_pixels = uv / pixel_size;
+	
+	vec2 uv_pixels_floor = round(uv_pixels) - vec2(0.5f);
+	vec2 uv_dxy_pixels = uv_pixels - uv_pixels_floor;
+	
+	uv_dxy_pixels = clamp((uv_dxy_pixels - vec2(0.5f)) * pixel_size / lxy + vec2(0.5f), 0.0f, 1.0f);
+	
+	uv = uv_pixels_floor * pixel_size;
+	
+	return textureGrad(smp, uv + uv_dxy_pixels * pixel_size, ddx, ddy);
+}
+
+void fragment()
+{
+	COLOR = texturePointSmooth(TEXTURE, UV, TEXTURE_PIXEL_SIZE);
+}"
+
+[sub_resource type="ShaderMaterial" id=44]
+shader = SubResource( 43 )
 
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 5.5, 12 )
@@ -17,7 +50,11 @@ extents = Vector2( 5.5, 12 )
 [sub_resource type="RectangleShape2D" id=41]
 extents = Vector2( 4.75, 4.5 )
 
+[sub_resource type="RectangleShape2D" id=42]
+extents = Vector2( 5, 12 )
+
 [node name="Player" type="KinematicBody2D"]
+material = SubResource( 44 )
 collision/safe_margin = 0.1
 script = ExtResource( 3 )
 
@@ -66,11 +103,11 @@ margin_bottom = 5.0
 tab_size = 2
 text = "test"
 
-[node name="mainCamera" type="Camera2D" parent="."]
-position = Vector2( -1, -59 )
-current = true
-process_mode = 0
-limit_top = 0
-drag_margin_h_enabled = true
-smoothing_enabled = true
-script = ExtResource( 10 )
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -1, 2 )
+shape = SubResource( 42 )
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

@@ -14,10 +14,14 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
+#
 func _physics_process(delta):
-	if Input.is_action_just_pressed("ui_right"):
-		self.position.x = 70;
-	if Input.is_action_just_pressed("ui_left"):
-		self.position.x = -70;
+#	if Input.is_action_pressed("ui_right"):
+#		self.position.x = 30;
+#	elif Input.is_action_pressed("ui_left"):
+#		self.position.x = -30;
+#	else:
+#		pass
+		
+	print(self.get_position().x)
 	

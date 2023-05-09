@@ -7,6 +7,7 @@ onready var IS_HANGING = get_node("IS_HANGING");
 onready var IS_SPRINTING = get_node("IS_SPRINTING");
 onready var IS_CLIMBING = get_node("IS_CLIMBING");
 
+var direction;
 var current_state;
 var prev_state;
 var state_text;
@@ -43,12 +44,14 @@ func accept_input():
 		set_state(IS_JUMPING, current_state, "IS_JUMPING")
 	#	set walking state with conditions for sprinting "right"
 	elif Input.is_action_pressed("ui_right") && player.is_on_floor() && current_state != IS_HANGING:
+		direction = "right";
 		if Input.is_action_pressed("shift"):
 			set_state(IS_SPRINTING, current_state, "IS_SPRINTING")
 		else:
 			set_state(IS_WALKING, current_state, "IS_WALKING")
 	#	set walking state with conditions for sprinting "left"
 	elif Input.is_action_pressed("ui_left") && player.is_on_floor() && current_state != IS_HANGING:
+		direction = "left";
 		if Input.is_action_pressed("shift"):
 			set_state(IS_SPRINTING, current_state, "IS_SPRINTING")
 		else:
@@ -77,6 +80,9 @@ func get_state():
 
 func get_state_text():
 	return state_text;
+	
+func get_direction():
+	return direction;
 
 func set_idle():
 	set_state(IS_IDLE, current_state, "IS_IDLE");

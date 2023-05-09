@@ -3,7 +3,7 @@ extends Node
 onready var sprite = get_node("../../AnimatedSprite");
 onready var playerState = get_parent();
 onready var player = get_parent().get_parent();
-onready var camera = get_node("../../mainCamera");
+#onready var camera = get_node("../../mainCamera");
 
 onready var climbCollision = get_node("../../climb/CollisionShape2D")
 
@@ -35,7 +35,7 @@ func set_animation():
 #		climbCollision.set_disabled(true);
 		tweens_completed = true;
 		sprite.play("ledgeClimb");
-		camera._set_current(false);
+#		camera._set_current(false);
 		var tween = create_tween();
 		tween.tween_property(player, "global_position", player.global_position + Vector2(3, -3), 0.05)
 		yield(tween, "finished");
@@ -48,8 +48,8 @@ func set_animation():
 		var tween4 = create_tween();
 		tween4.tween_property(player, "global_position", player.global_position + Vector2(0, 0), 0.2)
 		yield(tween4, "finished");
-		camera.set_follow_smoothing(3)
-		camera._set_current(true);
+#		camera.set_follow_smoothing(3)
+#		camera._set_current(true);
 		var tween5 = create_tween();
 		tween5.tween_property(player, "global_position", player.global_position + Vector2(13, -6), 0.01)
 		yield(tween5, "finished");
@@ -57,7 +57,7 @@ func set_animation():
 		get_parent().set_idle();
 		yield(get_tree().create_timer(0.1), "timeout")
 		yield(get_tree().create_timer(2), "timeout")
-		camera.set_follow_smoothing(5);
+#		camera.set_follow_smoothing(5);
 		tweens_completed = false;
 			
 		
