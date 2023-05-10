@@ -17,7 +17,11 @@ func _physics_process(delta):
 	check_if_state();
 		
 	if is_current_state:
-		sprite.play("idle");
+		
+		if Input.is_action_pressed("ui_down"):
+			sprite.play("crouch")
+		else:
+			sprite.play("idle");
 		apply_gravity();
 		
 		if !player.is_on_floor():

@@ -2,7 +2,7 @@ extends Camera2D
 
 onready var player = get_node("../Player")
 onready var player_state_node = get_node("../Player/playerState")
-var y_offset = -2
+var y_offset = -30
 var x_offset = 0
 var player_direction
 var min_distance = 0.5
