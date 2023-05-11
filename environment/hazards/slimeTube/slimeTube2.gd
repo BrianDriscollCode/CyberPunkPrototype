@@ -47,7 +47,6 @@ func _physics_process(delta):
 	elif slime_animation.get_frame() == 14:
 		randomGenerator.randomize();
 		randomNumber = randomGenerator.randf_range(3.0, 5.0)
-		
 		print(randomNumber)
 		print(15)
 		timer.set_wait_time(randomNumber) 

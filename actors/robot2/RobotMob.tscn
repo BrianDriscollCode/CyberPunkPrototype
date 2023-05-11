@@ -51,6 +51,7 @@ animations = [ {
 } ]
 
 [node name="RobotMob" type="Node2D"]
+scale = Vector2( 0.7, 0.7 )
 
 [node name="Path2D" type="Path2D" parent="."]
 curve = SubResource( 1 )
