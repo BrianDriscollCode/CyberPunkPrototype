@@ -96,6 +96,7 @@ script = ExtResource( 8 )
 script = ExtResource( 9 )
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
+visible = false
 margin_left = -14.0
 margin_top = -27.0
 margin_right = 90.0

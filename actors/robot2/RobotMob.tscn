@@ -73,11 +73,12 @@ enabled = true
 cast_to = Vector2( 150, 0 )
 
 [node name="RayCastLeft2" type="RayCast2D" parent="Path2D/PathFollow2D"]
+position = Vector2( 4.99559e-07, 5.71429 )
 enabled = true
 cast_to = Vector2( 150, 0 )
 
 [node name="RayCastLeft3" type="RayCast2D" parent="Path2D/PathFollow2D"]
-position = Vector2( -1.74846e-06, -20 )
+position = Vector2( -7.49338e-07, -8.57143 )
 enabled = true
 cast_to = Vector2( 150, 0 )
 
@@ -87,11 +88,12 @@ enabled = true
 cast_to = Vector2( -150, 0 )
 
 [node name="RayCastRight2" type="RayCast2D" parent="Path2D/PathFollow2D"]
+position = Vector2( 4.99559e-07, 5.71429 )
 enabled = true
 cast_to = Vector2( -150, 0 )
 
 [node name="RayCastRight3" type="RayCast2D" parent="Path2D/PathFollow2D"]
-position = Vector2( -1.74846e-06, -20 )
+position = Vector2( -7.49338e-07, -8.57143 )
 enabled = true
 cast_to = Vector2( -150, 0 )
 
