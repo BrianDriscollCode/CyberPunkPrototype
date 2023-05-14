@@ -46,10 +46,9 @@ func _physics_process(delta):
 			sprite.play("pullGun")
 		face_player();
 		if gun_out == true && first_play == false:
-			print("bullet")
 			first_play = true;
 			yield(get_tree().create_timer(0.5), "timeout");
-			print("bullet")
+			
 			if CURRENT_ENEMY_STATE == self:
 				var newBullet = bullet.instance();
 				scene.add_child(newBullet);
@@ -73,7 +72,6 @@ func face_player():
 
 
 func _on_AnimatedSprite_animation_finished():
-	print(sprite.get_animation())
 	if sprite.get_animation() == "pullGun":
 		gun_out = true;
 

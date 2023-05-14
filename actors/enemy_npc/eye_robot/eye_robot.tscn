@@ -1,0 +1,148 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://pixel_smoother.tres" type="Material" id=1]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv4.png" type="Texture" id=2]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv5.png" type="Texture" id=3]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv6.png" type="Texture" id=4]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv3.png" type="Texture" id=5]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv2.png" type="Texture" id=6]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv8.png" type="Texture" id=7]
+[ext_resource path="res://assets/enemySpriteSheets/eye_robot_v2/eye turretv7.png" type="Texture" id=8]
+[ext_resource path="res://actors/enemy_npc/eye_robot/eye_robot.gd" type="Script" id=9]
+[ext_resource path="res://assets/lighting/light.png" type="Texture" id=10]
+[ext_resource path="res://actors/enemy_npc/eye_robot/LaserRayCast.gd" type="Script" id=11]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 1.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 83, 23.5625 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 16.997, 90.3962 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 23.8391, 90.1398 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 28, 86.5 )
+
+[node name="EyeRobot" type="Node2D"]
+position = Vector2( 242, 22 )
+script = ExtResource( 9 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = ExtResource( 1 )
+position = Vector2( 0, 2 )
+frames = SubResource( 1 )
+frame = 6
+playing = true
+
+[node name="StartLaserParticles" type="CPUParticles2D" parent="."]
+modulate = Color( 0.996078, 0.294118, 0.980392, 1 )
+position = Vector2( 7, 6 )
+emitting = false
+amount = 60
+emission_shape = 1
+emission_sphere_radius = 1.0
+gravity = Vector2( -4, 6 )
+initial_velocity = 30.0
+orbit_velocity = 1.5
+radial_accel = 21.9
+angle = 18.7
+color = Color( 4, 4, 4, 1 )
+
+[node name="Left" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
+position = Vector2( -83, 12 )
+shape = SubResource( 5 )
+disabled = true
+
+[node name="MidLeftCollider" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MidLeftCollider"]
+position = Vector2( -51.488, 82.6547 )
+rotation = 0.640536
+shape = SubResource( 4 )
+disabled = true
+
+[node name="BottomLeftCollider" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomLeftCollider"]
+position = Vector2( -32.3917, 91.5822 )
+rotation = 0.34732
+shape = SubResource( 3 )
+disabled = true
+
+[node name="BottomCollider" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomCollider"]
+position = Vector2( -2, 94.5 )
+shape = SubResource( 2 )
+disabled = true
+
+[node name="BottomRightCollider" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomRightCollider"]
+position = Vector2( 30, 90 )
+rotation = -0.34732
+shape = SubResource( 3 )
+disabled = true
+
+[node name="MidRightCollider" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MidRightCollider"]
+position = Vector2( 39, 86 )
+rotation = -0.640536
+shape = SubResource( 4 )
+disabled = true
+
+[node name="Right" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2147483648
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
+position = Vector2( 83, 12 )
+shape = SubResource( 5 )
+disabled = true
+
+[node name="Light2D" type="Light2D" parent="."]
+position = Vector2( 0, 14 )
+texture = ExtResource( 10 )
+energy = 0.6
+
+[node name="LaserRayCast" type="RayCast2D" parent="."]
+position = Vector2( 0, 8 )
+script = ExtResource( 11 )
+
+[node name="Line2D" type="Line2D" parent="LaserRayCast"]
+position = Vector2( 0, 2 )
+points = PoolVector2Array( 0, 0, 0, 100 )
+
+[node name="Tween" type="Tween" parent="LaserRayCast"]
+
+[connection signal="area_entered" from="Left" to="." method="_on_Left_area_entered"]
+[connection signal="area_entered" from="MidLeftCollider" to="." method="_on_MidLeftCollider_area_entered"]
+[connection signal="area_entered" from="BottomLeftCollider" to="." method="_on_BottomLeftCollider_area_entered"]
+[connection signal="area_entered" from="BottomCollider" to="." method="_on_BottomCollider_area_entered"]
+[connection signal="area_entered" from="BottomRightCollider" to="." method="_on_BottomRightCollider_area_entered"]
+[connection signal="area_entered" from="MidRightCollider" to="." method="_on_MidRightCollider_area_entered"]
+[connection signal="area_entered" from="Right" to="." method="_on_Right_area_entered"]

@@ -13,6 +13,8 @@ var prev_state;
 var state_text;
 onready var player = get_parent();
 
+var is_in_town = false;
+
 onready var display_text = get_node("../RichTextLabel");
 var ledgeNodes;
 		
@@ -45,14 +47,14 @@ func accept_input():
 	#	set walking state with conditions for sprinting "right"
 	elif Input.is_action_pressed("ui_right") && player.is_on_floor() && current_state != IS_HANGING:
 		direction = "right";
-		if Input.is_action_pressed("shift"):
+		if is_in_town == false && !Input.is_action_pressed("shift"):
 			set_state(IS_SPRINTING, current_state, "IS_SPRINTING")
 		else:
 			set_state(IS_WALKING, current_state, "IS_WALKING")
 	#	set walking state with conditions for sprinting "left"
 	elif Input.is_action_pressed("ui_left") && player.is_on_floor() && current_state != IS_HANGING:
 		direction = "left";
-		if Input.is_action_pressed("shift"):
+		if is_in_town == false && !Input.is_action_pressed("shift"):
 			set_state(IS_SPRINTING, current_state, "IS_SPRINTING")
 		else:
 			set_state(IS_WALKING, current_state, "IS_WALKING")
@@ -86,6 +88,9 @@ func get_direction():
 
 func set_idle():
 	set_state(IS_IDLE, current_state, "IS_IDLE");
+	
+func get_is_in_town():
+	return is_in_town;
 
 func _left_ledge_connected(body, node):
 	current_state = IS_HANGING;

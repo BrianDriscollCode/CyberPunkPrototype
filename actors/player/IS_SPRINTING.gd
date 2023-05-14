@@ -6,7 +6,7 @@ onready var player = get_parent().get_parent();
 
 var sound_playing = false;
 
-const SPEED = 145
+const SPEED = 120
 const UP = Vector2(0, -1)
 const JUMP_SPEED = 250
 var character_motion = Vector2(0,0)

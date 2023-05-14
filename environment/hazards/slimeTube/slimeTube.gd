@@ -48,8 +48,6 @@ func _physics_process(delta):
 		randomGenerator.randomize();
 		randomNumber = randomGenerator.randf_range(3.0, 5.0)
 		
-		print(randomNumber)
-		print(15)
 		timer.set_wait_time(randomNumber) 
 		timer.start();
 	else:
@@ -57,8 +55,6 @@ func _physics_process(delta):
 		
 
 func _on_Timer_timeout():
-#	print("drop slime")
-	print(randomNumber)
 	slime_animation.set_frame(0) 
 	drop_slime = true;
 

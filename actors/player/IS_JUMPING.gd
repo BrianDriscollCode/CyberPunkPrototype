@@ -15,7 +15,10 @@ var apply_gravity = true;
 var player_hanging = false;
 
 var is_current_state = false;
+var is_in_town = false;
 
+func _ready():
+	set_is_in_town();
 
 func _physics_process(delta):
 	check_if_state();
@@ -54,8 +57,8 @@ func basic_movement():
 	else: 
 			applyGravity();
 			
-	if Input.is_action_pressed("shift"):
-		SPEED = 145; #sprint speed
+	if is_in_town == false && !Input.is_action_pressed("shift"):
+		SPEED = 140; #sprint speed
 	else: 
 		SPEED = 70; #walk speed
 				
@@ -67,6 +70,8 @@ func applyGravity():
 #		else: 
 #			character_motion.y = 0;
 	
+func set_is_in_town():
+	is_in_town = playerState.get_is_in_town();
 
 func check_hanging():
 	player_hanging = get_node("../IS_HANGING").return_hanging();

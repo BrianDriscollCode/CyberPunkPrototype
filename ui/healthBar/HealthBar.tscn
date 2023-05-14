@@ -12,7 +12,7 @@ position = Vector2( 191, 113 )
 texture = ExtResource( 2 )
 
 [node name="filler2" type="Sprite" parent="."]
-position = Vector2( 223, 113 )
+position = Vector2( 222, 113 )
 texture = ExtResource( 2 )
 
 [node name="filler3" type="Sprite" parent="."]
