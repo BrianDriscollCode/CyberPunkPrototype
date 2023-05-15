@@ -1,8 +1,8 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/environment/Tiles.png" type="Texture" id=1]
 [ext_resource path="res://assets/environment/Props-01.png" type="Texture" id=2]
-[ext_resource path="res://actors/player/tempChar.tscn" type="PackedScene" id=3]
+[ext_resource path="res://actors/player/tempChar2.tscn" type="PackedScene" id=3]
 [ext_resource path="res://levelTools/climbLedge.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/environment/Buildings.png" type="Texture" id=5]
 [ext_resource path="res://levelTools/CameraVersion2.gd" type="Script" id=6]
@@ -16,7 +16,6 @@
 [ext_resource path="res://assets/backgrounds/near-buildings-bg.png" type="Texture" id=14]
 [ext_resource path="res://environment/background/addOpacity.gd" type="Script" id=15]
 [ext_resource path="res://assets/backgrounds/buildings-bg.png" type="Texture" id=16]
-[ext_resource path="res://assets/backgrounds/mid.png" type="Texture" id=17]
 
 [sub_resource type="CanvasItemMaterial" id=8]
 light_mode = 2
@@ -421,32 +420,31 @@ motion_scale = Vector2( 0.5, 0.5 )
 motion_mirroring = Vector2( 2266, 0 )
 
 [node name="ColorRect2" type="ColorRect" parent="ParallaxBackground/ParallaxLayer2"]
-visible = false
 margin_left = -628.0
 margin_top = -282.0
 margin_right = 1638.0
 margin_bottom = 547.0
-color = Color( 0.027451, 0, 0.0235294, 1 )
-
-[node name="FarBuilding" type="ParallaxLayer" parent="ParallaxBackground"]
-position = Vector2( 8, 235 )
-motion_scale = Vector2( 0.05, 0.05 )
-motion_mirroring = Vector2( 400, 0 )
-
-[node name="Sprite" type="Sprite" parent="ParallaxBackground/FarBuilding"]
-position = Vector2( 228, -235 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 17 )
+color = Color( 0.0745098, 0, 0.109804, 1 )
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2( 0.1, 0.1 )
 motion_mirroring = Vector2( 1000, 0 )
 
-[node name="MidBuildings" type="Sprite" parent="ParallaxBackground/ParallaxLayer4"]
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer4"]
 material = ExtResource( 8 )
-position = Vector2( 201, 68 )
-scale = Vector2( 2, 2 )
+position = Vector2( 259, 141 )
+scale = Vector2( 3, 3 )
 texture = ExtResource( 16 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.3, 0.3 )
+motion_mirroring = Vector2( 1000, 0 )
+
+[node name="Near-buildings-bg" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+material = ExtResource( 8 )
+position = Vector2( 512, 143 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 14 )
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_mirroring = Vector2( 2266, 0 )
@@ -457,18 +455,8 @@ margin_left = -628.0
 margin_top = -282.0
 margin_right = 1638.0
 margin_bottom = 547.0
-color = Color( 0.25098, 0.145098, 0.247059, 1 )
+color = Color( 0.0745098, 0, 0.109804, 1 )
 script = ExtResource( 15 )
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_scale = Vector2( 0.2, 0.2 )
-motion_mirroring = Vector2( 1000, 0 )
-
-[node name="Near-buildings-bg" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-material = ExtResource( 8 )
-position = Vector2( 512, 143 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 14 )
 
 [node name="Node2D3" type="Node2D" parent="."]
 material = SubResource( 10 )
@@ -548,10 +536,6 @@ collision_layer = 8
 position = Vector2( 1053, 104 )
 collision_layer = 8
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
-unique_name_in_owner = true
-position = Vector2( 803, 134 )
-
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 355, 214 )
 current = true
@@ -561,6 +545,9 @@ script = ExtResource( 6 )
 position = Vector2( -204, -112 )
 
 [node name="Light2D" type="Light2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource( 3 )]
+position = Vector2( 152, 210 )
 
 [node name="slimeTube" parent="." instance=ExtResource( 10 )]
 position = Vector2( 839, 48 )
@@ -587,18 +574,5 @@ position = Vector2( 331, 171 )
 [node name="Node2D2" parent="." instance=ExtResource( 13 )]
 position = Vector2( 497, 263 )
 
-[node name="EyeRobot" parent="." instance=ExtResource( 12 )]
-position = Vector2( 1015, 42 )
-
-[node name="EyeRobot2" parent="." instance=ExtResource( 12 )]
-position = Vector2( 797, 42 )
-
-[connection signal="area_shape_entered" from="RightLedgeNodes/climbLedge2" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="RightLedgeNodes/climbLedge4" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="RightLedgeNodes/climbLedge5" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="LeftLedgeNodes/climbLedge" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="LeftLedgeNodes/climbLedge3" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="LeftLedgeNodes/climbLedge5" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="LeftLedgeNodes/climbLedge6" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="LeftLedgeNodes/climbLedge7" to="Player" method="_on_climbLedge_area_shape_entered"]
-[connection signal="area_shape_entered" from="LeftLedgeNodes/climbLedge8" to="Player" method="_on_climbLedge_area_shape_entered"]
+[node name="Node2D" parent="." instance=ExtResource( 12 )]
+position = Vector2( 1009, 42 )

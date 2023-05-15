@@ -33,14 +33,13 @@ extents = Vector2( 23.8391, 90.1398 )
 extents = Vector2( 28, 86.5 )
 
 [node name="EyeRobot" type="Node2D"]
-position = Vector2( 242, 22 )
 script = ExtResource( 9 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 material = ExtResource( 1 )
 position = Vector2( 0, 2 )
 frames = SubResource( 1 )
-frame = 6
+frame = 5
 playing = true
 
 [node name="StartLaserParticles" type="CPUParticles2D" parent="."]
@@ -131,13 +130,22 @@ energy = 0.6
 
 [node name="LaserRayCast" type="RayCast2D" parent="."]
 position = Vector2( 0, 8 )
+enabled = true
+cast_to = Vector2( 0, 0 )
+collide_with_areas = true
 script = ExtResource( 11 )
 
 [node name="Line2D" type="Line2D" parent="LaserRayCast"]
 position = Vector2( 0, 2 )
-points = PoolVector2Array( 0, 0, 0, 100 )
+points = PoolVector2Array( 0, 0, 0, 0 )
 
 [node name="Tween" type="Tween" parent="LaserRayCast"]
+
+[node name="Attack_Timer" type="Timer" parent="."]
+wait_time = 3.0
+
+[node name="Laser_Timer" type="Timer" parent="."]
+wait_time = 1.5
 
 [connection signal="area_entered" from="Left" to="." method="_on_Left_area_entered"]
 [connection signal="area_entered" from="MidLeftCollider" to="." method="_on_MidLeftCollider_area_entered"]
@@ -146,3 +154,5 @@ points = PoolVector2Array( 0, 0, 0, 100 )
 [connection signal="area_entered" from="BottomRightCollider" to="." method="_on_BottomRightCollider_area_entered"]
 [connection signal="area_entered" from="MidRightCollider" to="." method="_on_MidRightCollider_area_entered"]
 [connection signal="area_entered" from="Right" to="." method="_on_Right_area_entered"]
+[connection signal="timeout" from="Attack_Timer" to="." method="_on_Attack_Timer_timeout"]
+[connection signal="timeout" from="Laser_Timer" to="." method="_on_Laser_Timer_timeout"]

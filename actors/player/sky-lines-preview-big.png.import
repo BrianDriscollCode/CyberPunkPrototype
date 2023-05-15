@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/buildings-bg.png-3ee91ca5b2c0984bfcb138d0b91301d3.stex"
+path="res://.import/sky-lines-preview-big.png-a1529384aeb677edb1f9a7ff6e1bdbd2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/backgrounds/buildings-bg.png"
-dest_files=[ "res://.import/buildings-bg.png-3ee91ca5b2c0984bfcb138d0b91301d3.stex" ]
+source_file="res://actors/player/sky-lines-preview-big.png"
+dest_files=[ "res://.import/sky-lines-preview-big.png-a1529384aeb677edb1f9a7ff6e1bdbd2.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=false
+flags/filter=true
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

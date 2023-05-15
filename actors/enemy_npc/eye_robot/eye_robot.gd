@@ -5,10 +5,12 @@ onready var animated_sprite = $AnimatedSprite;
 var collider_chooser;
 
 #resources
-onready var laser = $Laser;
+onready var laser = $LaserRayCast;
+onready var attack_timer = $Attack_Timer;
+onready var laser_timer = $Laser_Timer;
 
 #player
-onready var player = "%Player";
+onready var player = get_node("%Player");
 
 #particles
 onready var start_laser_particles = $StartLaserParticles;
@@ -27,6 +29,7 @@ onready var right_collider = $Right/CollisionShape2D;
 onready var mid_right_collider = $MidRightCollider/CollisionShape2D;
 onready var bottom_right_collider = $BottomRightCollider/CollisionShape2D;
 
+
 enum states {
 	PATROL,
 	ATTACKING,
@@ -37,6 +40,8 @@ var current_state;
 var is_emitting = false;
 var is_colliders_enabled = false;
 var animation_paused = false;
+var laser_shot = false;
+var timer_started = false;
  
 
 
@@ -52,26 +57,50 @@ func _physics_process(delta):
 		check_animation();
 		align_colliders();
 		enable_colliders();
+		if animation_paused:
+			animated_sprite.play();
+			animation_paused = false;
+			is_colliders_enabled = false;
+			laser_shot = false;
+			is_emitting = false;
 	elif current_state == states.ATTACKING:
 		if !is_colliders_enabled:
 			enable_all_colliders();
+			is_colliders_enabled = true;
 		if !is_emitting:
 			start_emitters();
+			is_emitting = true;	
 		if !animation_paused:
 			animated_sprite.stop()
 			animation_paused = true;
+		if !laser_shot:
+			shoot();
+			laser_shot = true;
 	else:
 		pass;
+
+func return_to_patrol():
+	current_state = states.PATROL;
+	laser.disappear();
+	
+	
+func start_attack_timer():
+	attack_timer.start();
+	
+func stop_timer():
+	attack_timer.stop();
+	timer_started = false;
 		
+func shoot():
+	yield(get_tree().create_timer(1.5), "timeout")
+	update_player_position();
+	yield(get_tree().create_timer(0.3), "timeout")
+	laser.shoot();				
+	start_attack_timer();
+	
 func start_emitters():
 	start_laser_particles.set_emitting(true)
-	is_emitting = true;	
-	print("START EMITTER")
-	print("START EMITTER")
-	print("START EMITTER")
-	print("START EMITTER")
-	print("START EMITTER")
-		
+
 func enable_all_colliders():
 	left_collider.set_disabled(false);
 	mid_left_collider.set_disabled(false);
@@ -80,7 +109,6 @@ func enable_all_colliders():
 	bottom_right_collider.set_disabled(false);
 	mid_right_collider.set_disabled(false);
 	right_collider.set_disabled(false);
-	is_colliders_enabled = true;
 			
 func check_animation():
 	current_frame = animated_sprite.get_frame();
@@ -136,52 +164,79 @@ func enable_colliders():
 func get_player_position():
 	return player.get_global_position();
 
+func get_turret_state():
+	return current_state;
+
+func update_player_position():
+	laser.update_player_position()
+	
 func _on_BottomCollider_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(3)
 	start_laser_particles.position = Vector2(1, 14);
-	
-	print("bottom")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
 
 func _on_Left_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(0)
 	start_laser_particles.position = Vector2(-6, 8);
-	print("left")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
 
 func _on_MidLeftCollider_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(1)
 	start_laser_particles.position = Vector2(-5, 11);
-	print("midleft")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
 	
 func _on_BottomLeftCollider_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(2)
 	start_laser_particles.position = Vector2(-2, 13);
-	print("bottomleft")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
 
 func _on_BottomRightCollider_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(4)
 	start_laser_particles.position = Vector2(4, 13);
-	print("bottomright")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
 
 func _on_MidRightCollider_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(5)
 	start_laser_particles.position = Vector2(6, 11);
-	print("midRight")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
 
 func _on_Right_area_entered(area):
 	if current_state == states.PATROL:
 		current_state = states.ATTACKING;
 	animated_sprite.set_frame(6)
 	start_laser_particles.position = Vector2(7, 8);
-	print("right")
+	stop_timer();
+	if laser_timer.is_stopped():
+		laser_timer.start();
+		
+
+func _on_Attack_Timer_timeout():
+	laser_timer.stop();
+	return_to_patrol();
+
+func _on_Laser_Timer_timeout():
+	laser_shot = false;
