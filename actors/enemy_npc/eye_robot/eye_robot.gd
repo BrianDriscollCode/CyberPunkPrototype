@@ -117,24 +117,31 @@ func align_colliders():
 	if current_frame == 0:
 		collider_chooser = "left";
 		start_laser_particles.position = Vector2(-6, 8);
+		laser.set_start_point(current_frame);
 	elif current_frame == 1 || current_frame == 11:
 		collider_chooser = "mid_left";
 		start_laser_particles.position = Vector2(-5, 11);
+		laser.set_start_point(current_frame);
 	elif current_frame == 2 || current_frame == 10:
 		collider_chooser = "bottom_left";
 		start_laser_particles.position = Vector2(-2, 13);
+		laser.set_start_point(current_frame);
 	elif current_frame == 3 || current_frame == 9:
 		collider_chooser = "bottom";
 		start_laser_particles.position = Vector2(1, 14);
+		laser.set_start_point(current_frame);
 	elif current_frame == 4 || current_frame == 8:
 		collider_chooser = "bottom_right";
 		start_laser_particles.position = Vector2(4, 13);
+		laser.set_start_point(current_frame);
 	elif current_frame == 5 || current_frame == 7:
 		collider_chooser = "mid_right";
 		start_laser_particles.position = Vector2(6, 11);
+		laser.set_start_point(current_frame);
 	elif current_frame == 6:
 		collider_chooser = "right";
 		start_laser_particles.position = Vector2(7, 8);
+		laser.set_start_point(current_frame);
 
 func enable_colliders():
 	left_collider.set_disabled(true);

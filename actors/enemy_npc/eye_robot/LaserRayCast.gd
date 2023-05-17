@@ -15,9 +15,24 @@ var direction_to_player;
 #func _unhandled_input(event: InputEvent) -> void:
 #	if event is InputEventMouseButton:
 #		self.is_casting = event.pressed;
+var cast_point;
+var cast_laser = false;
+
+onready var start = $start;
+onready var end = $end;
 
 func _physics_process(delta):
+	line2D.points[0] = start.position;
 	set_is_casting(true);
+	if cast_laser:
+		line2D.points[1] = (player_local_position - turret_local_position) * Vector2(20, 20)
+#		self.cast_to = direction_to_player * 400
+		self.cast_to = (player_local_position - turret_local_position) * Vector2(20, 20)
+	if is_colliding():
+		cast_point = to_local(get_collision_point());
+		line2D.points[1] = cast_point;
+		self.cast_to = cast_point;
+	
 		
 
 func set_is_casting(cast: bool) -> void:
@@ -31,8 +46,7 @@ func set_is_casting(cast: bool) -> void:
 
 func shoot():
 	if is_casting and parent.get_turret_state() == 1:
-		line2D.points[1] = (player_local_position - turret_local_position) * Vector2(20, 20)
-		self.cast_to = direction_to_player * 400
+		cast_laser = true;
 
 func appear() -> void:
 	$Tween.stop_all();
@@ -49,6 +63,23 @@ func update_player_position():
 	player_local_position = parent.to_local(player_global_position)
 	turret_local_position = parent.to_local(parent.get_global_position())
 	direction_to_player = global_position.direction_to(player_global_position);
+
+func set_start_point(current_frame):
+	if current_frame == 0:
+		start.position = Vector2(-6, -2)
+	elif current_frame == 1 || current_frame == 11:
+		start.position = Vector2(1, -1)
+	elif current_frame == 2 || current_frame == 10:
+		start.position = Vector2(-3, 3)
+	elif current_frame == 3 || current_frame == 9:
+		start.position = Vector2(1, 4)
+	elif current_frame == 4 || current_frame == 8:
+		start.position = Vector2(4, 3)
+	elif current_frame == 5 || current_frame == 7:
+		start.position = Vector2(6, 1)
+	elif current_frame == 6:
+		start.position = Vector2(7, -2)
+		
 
 #V2
 #
