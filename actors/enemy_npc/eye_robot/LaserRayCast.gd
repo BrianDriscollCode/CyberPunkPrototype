@@ -22,16 +22,17 @@ onready var start = $start;
 onready var end = $end;
 
 func _physics_process(delta):
-	line2D.points[0] = start.position;
+#	line2D.points[0] = start.position;
 	set_is_casting(true);
 	if cast_laser:
+		line2D.points[0] = start.position
 		line2D.points[1] = (player_local_position - turret_local_position) * Vector2(20, 20)
 #		self.cast_to = direction_to_player * 400
 		self.cast_to = (player_local_position - turret_local_position) * Vector2(20, 20)
-	if is_colliding():
-		cast_point = to_local(get_collision_point());
-		line2D.points[1] = cast_point;
-		self.cast_to = cast_point;
+#	if is_colliding():
+#		cast_point = to_local(get_collision_point());
+#		line2D.points[1] = cast_point;
+#		self.cast_to = cast_point;
 	
 		
 
