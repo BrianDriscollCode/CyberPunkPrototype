@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://pixel_smoother.tres" type="Material" id=1]
+[ext_resource path="res://weapons/projectile/thin_laser.gd" type="Script" id=2]
+[ext_resource path="res://assets/projectile/laser/laser_thin2.png" type="Texture" id=3]
+[ext_resource path="res://assets/projectile/laser/laser_thin3.png" type="Texture" id=4]
+[ext_resource path="res://assets/projectile/laser/laser_thin4.png" type="Texture" id=5]
+[ext_resource path="res://assets/projectile/laser/laser_thin1.png" type="Texture" id=6]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
+"loop": false,
+"name": "default",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 2, 1 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 2.5, 1 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 5, 1 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 8.5, 1 )
+
+[node name="laser" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+modulate = Color( 0.87451, 0, 1, 1 )
+material = ExtResource( 1 )
+position = Vector2( 0, 1 )
+frames = SubResource( 1 )
+frame = 3
+playing = true
+
+[node name="area1" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area1"]
+shape = SubResource( 2 )
+disabled = true
+
+[node name="area2" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area2"]
+position = Vector2( -1.5, 0 )
+shape = SubResource( 3 )
+disabled = true
+
+[node name="area3" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area3"]
+position = Vector2( -3, 0 )
+shape = SubResource( 4 )
+disabled = true
+
+[node name="area4" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="area4"]
+position = Vector2( -5.5, 0 )
+shape = SubResource( 5 )
+disabled = true
