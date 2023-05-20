@@ -9,15 +9,21 @@ onready var area2_collision = get_node("area2/CollisionShape2D");
 onready var area3_collision = get_node("area3/CollisionShape2D");
 onready var area4_collision = get_node("area4/CollisionShape2D");
 
+var velocity_set = false;
+
 var velocity;
 
-func _ready():
-	if player.get_global_position() < self.global_position:
-		velocity = 4;
-	else:
-		velocity = -4;
 
+	
 func _physics_process(delta):
+	if !velocity_set:
+		if player.get_global_position() < self.get_global_position():
+			velocity = -4;
+		else:
+			velocity = 4;
+		velocity_set = true;
+
+	
 	current_frame = sprite.get_frame();
 	
 	self.global_position = self.global_position + Vector2(velocity,0);

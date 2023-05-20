@@ -24,12 +24,14 @@ func _physics_process(delta):
 	if !on_screen_notifier.is_on_screen() && can_queue_free:
 		self.queue_free();
 	
+	print(player.get_global_position(), self.get_global_position());
+	
 	if player.get_global_position().x < self.get_global_position().x && !direction_chosen:
 		move_left = true;
-		direction_chosen = true;
+		
 	elif player.get_global_position().x > self.get_global_position().x && !direction_chosen:
 		move_right = true;
-		direction_chosen = true;
+
 	
 	if move_left:
 		self.global_position.x -= SPEED;
