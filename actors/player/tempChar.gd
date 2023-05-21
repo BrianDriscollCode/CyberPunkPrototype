@@ -8,6 +8,7 @@ onready var damage_timer = $DamageTimer;
 
 
 
+
 func _on_Area2D_area_entered(area):
 	if can_take_damage:
 		character_health -= 1;

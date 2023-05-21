@@ -10,7 +10,7 @@ onready var attack_timer = $Attack_Timer;
 onready var laser_timer = $Laser_Timer;
 
 #player
-onready var player = get_node("%Player");
+onready var player = get_tree().get_root().get_node("./Level/Player")
 
 #particles
 onready var start_laser_particles = $StartLaserParticles;

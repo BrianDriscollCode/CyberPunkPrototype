@@ -36,9 +36,10 @@ func _physics_process(delta):
 	
 	if player.get_global_position().x < self.get_global_position().x && !direction_chosen:
 		move_left = true;
-		
+		direction_chosen = true;
 	elif player.get_global_position().x > self.get_global_position().x && !direction_chosen:
 		move_right = true;
+		direction_chosen = true;
 
 	
 	if move_left:

@@ -18,11 +18,18 @@ var apply_gravity = true;
 
 var is_current_state = false;
 
+var is_punching = false;
+
 func _physics_process(delta):
 	check_if_state();
 		
 	if is_current_state:
-		sprite.play("run");
+		if Input.is_action_just_pressed("attack"):
+			is_punching = true;
+		if is_punching:
+			sprite.play("punch");
+		else:
+			sprite.play("run")
 		basic_movement();
 		applyGravity(delta);
 		player.move_and_slide(character_motion, UP)
@@ -32,6 +39,7 @@ func check_if_state():
 		is_current_state = true;
 	else:
 		is_current_state = false;
+		is_punching = false;
 		
 func basic_movement():
 		if sound_playing == false:
@@ -56,3 +64,8 @@ func applyGravity(delta):
 			jump_gravity_increment -= .15
 	else:
 			character_motion.y = 0;
+
+
+func _on_AnimatedSprite_animation_finished():
+	if sprite.get_animation() == "punch":
+		is_punching = false;

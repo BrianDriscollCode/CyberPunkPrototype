@@ -12,16 +12,22 @@ var jump_gravity_increment = 10
 
 var apply_gravity = true;
 var is_current_state = false;
+var is_punching = false;
 
 func _physics_process(delta):
 	check_if_state();
 		
 	if is_current_state:
+		if Input.is_action_just_pressed("attack"):
+			is_punching = true;
 		
 		if Input.is_action_pressed("ui_down"):
 			sprite.play("crouch")
 		else:
-			sprite.play("idle");
+			if is_punching:
+				sprite.play("punch");
+			else:
+				sprite.play("idle");
 		apply_gravity();
 		
 		if !player.is_on_floor():
@@ -39,6 +45,7 @@ func check_if_state():
 		is_current_state = true;
 	else:
 		is_current_state = false;
+		is_punching = false;
 
 func apply_gravity():
 	if apply_gravity == true:		
@@ -47,3 +54,8 @@ func apply_gravity():
 			jump_gravity_increment -= .15
 		else: 
 			character_motion.y = 0;
+
+
+func _on_AnimatedSprite_animation_finished():
+	if sprite.get_animation() == "punch":
+		is_punching = false;

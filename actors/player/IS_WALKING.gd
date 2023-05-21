@@ -26,6 +26,7 @@ func _physics_process(delta):
 		basic_movement();
 		
 		player.move_and_slide(character_motion, UP)
+		attack();
 
 func check_if_state():
 	if playerState.get_state() == self:
@@ -47,6 +48,10 @@ func basic_movement():
 		else: 
 #			sprite.play("default");
 			character_motion.x = 0
+
+func attack():
+	if Input.is_action_pressed("attack"):
+		sprite.play("punch");
 
 func applyGravity(delta):
 	if apply_gravity == true:		

@@ -8,7 +8,7 @@ onready var climbCollision = get_node("../../climb/CollisionShape2D")
 
 var SPEED = 60
 const UP = Vector2(0, -1)
-const JUMP_SPEED = 250
+const JUMP_SPEED = 270
 var character_motion = Vector2(0,0)
 var jump_gravity_increment = 10
 var apply_gravity = true;
@@ -16,16 +16,23 @@ var player_hanging = false;
 
 var is_current_state = false;
 var is_in_town = false;
+var is_punching = false;
 
 func _ready():
 	set_is_in_town();
 
 func _physics_process(delta):
 	check_if_state();
+	
+	if Input.is_action_just_pressed("attack"):
+		is_punching = true;
 		
 	if is_current_state:
 		climbCollision.set_disabled(false);
-		sprite.play("jump");
+		if is_punching:
+			sprite.play("punch");
+		else:
+			sprite.play("jump");
 		basic_movement();
 		player.move_and_slide(character_motion, UP)
 	else: 
@@ -36,6 +43,7 @@ func check_if_state():
 		is_current_state = true;
 	else:
 		is_current_state = false;
+		is_punching = false;
 
 func basic_movement():
 	if Input.is_action_pressed("ui_right"):
@@ -76,3 +84,8 @@ func set_is_in_town():
 func check_hanging():
 	player_hanging = get_node("../IS_HANGING").return_hanging();
 	return player_hanging;
+
+
+func _on_AnimatedSprite_animation_finished():
+	if sprite.get_animation() == "punch":
+		is_punching = false;
