@@ -1,13 +1,9 @@
 extends KinematicBody2D
 
-
 var character_health = 3;
 var can_take_damage = true;
 onready var health_bar = get_node("../Camera2D/HealthBar");
 onready var damage_timer = $DamageTimer;
-
-
-
 
 func _on_Area2D_area_entered(area):
 	if can_take_damage:

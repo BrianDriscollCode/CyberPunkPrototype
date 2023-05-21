@@ -3,6 +3,7 @@ extends Node
 onready var sprite = get_node("../../AnimatedSprite");
 onready var playerState = get_parent();
 onready var player = get_parent().get_parent();
+onready var AttackState = get_node("../../AttackState");
 
 var sound_playing = false;
 
@@ -18,17 +19,14 @@ var apply_gravity = true;
 
 var is_current_state = false;
 
-var is_punching = false;
+var is_attacking = false;
 
 func _physics_process(delta):
 	check_if_state();
+	is_attacking = AttackState.get_attack_state();
 		
 	if is_current_state:
-		if Input.is_action_just_pressed("attack"):
-			is_punching = true;
-		if is_punching:
-			sprite.play("punch");
-		else:
+		if !is_attacking:
 			sprite.play("run")
 		basic_movement();
 		applyGravity(delta);
@@ -39,7 +37,6 @@ func check_if_state():
 		is_current_state = true;
 	else:
 		is_current_state = false;
-		is_punching = false;
 		
 func basic_movement():
 		if sound_playing == false:
@@ -66,6 +63,6 @@ func applyGravity(delta):
 			character_motion.y = 0;
 
 
-func _on_AnimatedSprite_animation_finished():
-	if sprite.get_animation() == "punch":
-		is_punching = false;
+#func _on_AnimatedSprite_animation_finished():
+#	if sprite.get_animation() == "punch":
+#		is_punching = false;

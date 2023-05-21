@@ -3,6 +3,7 @@ extends Node
 onready var sprite = get_node("../../AnimatedSprite");
 onready var playerState = get_parent();
 onready var player = get_parent().get_parent();
+onready var AttackState = get_node("../../AttackState");
 
 const SPEED = 70
 const UP = Vector2(0, -1)
@@ -12,21 +13,18 @@ var jump_gravity_increment = 10
 
 var apply_gravity = true;
 var is_current_state = false;
-var is_punching = false;
+var is_attacking = false;
 
 func _physics_process(delta):
 	check_if_state();
+	is_attacking = AttackState.get_attack_state();
 		
 	if is_current_state:
-		if Input.is_action_just_pressed("attack"):
-			is_punching = true;
 		
 		if Input.is_action_pressed("ui_down"):
 			sprite.play("crouch")
 		else:
-			if is_punching:
-				sprite.play("punch");
-			else:
+			if !is_attacking:
 				sprite.play("idle");
 		apply_gravity();
 		
@@ -45,7 +43,6 @@ func check_if_state():
 		is_current_state = true;
 	else:
 		is_current_state = false;
-		is_punching = false;
 
 func apply_gravity():
 	if apply_gravity == true:		
@@ -56,6 +53,6 @@ func apply_gravity():
 			character_motion.y = 0;
 
 
-func _on_AnimatedSprite_animation_finished():
-	if sprite.get_animation() == "punch":
-		is_punching = false;
+#func _on_AnimatedSprite_animation_finished():
+#	if sprite.get_animation() == "punch":
+#		is_punching = false;

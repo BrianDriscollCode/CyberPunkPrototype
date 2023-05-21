@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://actors/enemy_npc/eye_patrol/eye_patrol.gd" type="Script" id=1]
 [ext_resource path="res://actors/enemy_npc/eye_patrol/IS_ATTACKING.gd" type="Script" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://assets/enemySpriteSheets/eye_patrol_ball/model_3/attack2/eye_patroll_ball_attack_v2.png" type="Texture" id=20]
 [ext_resource path="res://assets/enemySpriteSheets/eye_patrol_ball/model_3/attack2/eye_patroll_ball_attack_v5.png" type="Texture" id=21]
 [ext_resource path="res://assets/enemySpriteSheets/eye_patrol_ball/model_3/attack2/eye_patroll_ball_attack_v4.png" type="Texture" id=22]
+[ext_resource path="res://actors/enemy_npc/eye_patrol/IS_DYING.gd" type="Script" id=23]
 
 [sub_resource type="SpriteFrames" id=11]
 animations = [ {
@@ -60,6 +61,9 @@ radius = 53.0094
 [sub_resource type="RectangleShape2D" id=14]
 extents = Vector2( 119, 35 )
 
+[sub_resource type="CircleShape2D" id=15]
+radius = 11.0
+
 [node name="eye_patrol" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -75,7 +79,7 @@ material = ExtResource( 6 )
 frames = SubResource( 13 )
 
 [node name="active_area" type="Area2D" parent="."]
-collision_layer = 8
+collision_layer = 256
 collision_mask = 2147483648
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="active_area"]
@@ -93,6 +97,9 @@ script = ExtResource( 2 )
 [node name="IS_FOLLOWING" type="Node" parent="EnemyState"]
 script = ExtResource( 3 )
 
+[node name="IS_DYING" type="Node" parent="EnemyState"]
+script = ExtResource( 23 )
+
 [node name="bullet_spawn" type="Node2D" parent="."]
 position = Vector2( -5, -1 )
 
@@ -100,7 +107,7 @@ position = Vector2( -5, -1 )
 one_shot = true
 
 [node name="attacking_area" type="Area2D" parent="."]
-collision_layer = 8
+collision_layer = 256
 collision_mask = 2147483648
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="attacking_area"]
@@ -139,7 +146,19 @@ position = Vector2( -71, 0 )
 [node name="RightPoint" type="Node2D" parent="."]
 position = Vector2( 72, 0 )
 
+[node name="damageCollider" type="Area2D" parent="."]
+collision_layer = 512
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="damageCollider"]
+shape = SubResource( 15 )
+
+[node name="color_timer" type="Timer" parent="."]
+wait_time = 0.15
+
 [connection signal="animation_finished" from="AnimatedSprite" to="EnemyState" method="_on_AnimatedSprite_animation_finished"]
 [connection signal="area_entered" from="active_area" to="EnemyState/IS_IDLE" method="_on_Area2D_area_entered"]
 [connection signal="timeout" from="shoot_timer" to="EnemyState/IS_ATTACKING" method="_on_shoot_timer_timeout"]
 [connection signal="area_exited" from="attacking_area" to="EnemyState" method="_on_attacking_area_area_exited"]
+[connection signal="area_entered" from="damageCollider" to="." method="_on_damageCollider_area_entered"]
+[connection signal="timeout" from="color_timer" to="." method="_on_color_timer_timeout"]
